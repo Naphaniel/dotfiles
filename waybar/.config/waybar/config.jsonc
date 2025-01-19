@@ -1,0 +1,46 @@
+{
+  "height": 30,
+  "margin-top": 4,
+  "margin-left": 4,
+  "margin-right": 4,
+  "modules-left": [
+    "hyprland/workspaces",
+  ],
+  "modules-center": [
+    "hyprland/window",
+  ],
+  "modules-right": [
+    "pulseaudio",
+    "network",
+    "clock",
+  ],
+  "hyprland/workspaces": {
+    "format": "{id}",
+    }
+  },
+  "clock": {
+    "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+    "format-alt": "{:%Y-%m-%d}"
+  },
+  "network": {
+    "format-wifi": "",
+    "format-ethernet": "󱎔",
+    "tooltip-format": "Connected: {essid}",
+    "format-linked": "󱎔",
+    "format-disconnected": "󰤭",
+  },
+  "pulseaudio": {
+    "format": "{icon}",
+    "format-bluetooth": "{icon} ",
+    "format-muted": "󰖁",
+    "format-icons": {
+      "headphone": "",
+      "default": [
+        "",
+        "",
+        ""
+      ]
+    },
+    "on-click": "kitty pulsemixer"
+  },
+}
