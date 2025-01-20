@@ -11,6 +11,14 @@ set -gx fish_cursor_default block
 set -gx fish_cursor_insert line blink
 set -gx fish_cursor_visual block
 set -gx fish_cursor_replace_once underscore
+set -gx EDITOR nvim
+set -gx PAGER less
+
+# Solarized Dark & Green highlight
+set -g man_blink -o f6c177
+set -g man_bold -o c4a7e7
+set -g man_standout -b c4a7e7
+set -g man_underline -u f6c177
 
 function y
 	set tmp (mktemp -t "yazi-cwd.XXXXXX")
@@ -21,7 +29,6 @@ function y
 	rm -f -- "$tmp"
 end
 
-if uwsm check may-start
-	exec uwsm start hyprland.desktop
+if test (tty) = "/dev/tty1"
+	exec hyprland
 end
-
