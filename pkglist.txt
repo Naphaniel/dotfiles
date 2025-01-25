@@ -90,7 +90,7 @@ modemmanager
 mtools
 nano
 nano-syntax-highlighting
-neovim
+neovim-nightly-bin
 netctl
 network-manager-applet
 networkmanager
@@ -102,6 +102,7 @@ noto-fonts
 noto-fonts-cjk
 noto-fonts-emoji
 noto-fonts-extra
+npm
 nss-mdns
 ntfs-3g
 ntp
@@ -147,6 +148,7 @@ systemd-sysvcompat
 texinfo
 tldr
 tofi
+tree-sitter-cli
 ttf-bitstream-vera
 ttf-dejavu
 ttf-liberation
