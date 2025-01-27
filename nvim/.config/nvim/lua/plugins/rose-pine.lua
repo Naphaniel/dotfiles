@@ -1,7 +1,7 @@
 return {
-  { 
-    "rose-pine/neovim", 
-    config = function() 
+  {
+    "rose-pine/neovim",
+    config = function()
       require("rose-pine").setup({
         variant = "main",
         styles = {
@@ -9,6 +9,6 @@ return {
         }
       })
       vim.cmd.colorscheme("rose-pine")
-    end 
+    end
   }
 }
