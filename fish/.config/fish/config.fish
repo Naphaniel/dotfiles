@@ -32,3 +32,5 @@ end
 if test (tty) = "/dev/tty1"
 	exec hyprland
 end
+
+zoxide init fish | source

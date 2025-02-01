@@ -1,5 +1,15 @@
 local wezterm = require("wezterm") --[[@as Wezterm]]
 
+wezterm.on("update-right-status", function(window, pane)
+  local workspace = string.gsub(window:active_workspace(), "(.*[/\\])(.*)", "%2")
+  window:set_right_status(workspace)
+end)
+
+-- load plugin
+local workspace_switcher = wezterm.plugin.require("https://github.com/MLFlexer/smart_workspace_switcher.wezterm")
+-- set path to zoxide
+workspace_switcher.zoxide_path = "/usr/bin/zoxide"
+
 local act = wezterm.action
 local M = {}
 
@@ -38,10 +48,10 @@ function M.setup(config)
     { mods = M.mod, key = "h",     action = act({ ActivateTabRelative = -1 }) },
     { mods = M.mod, key = "R",     action = wezterm.action.RotatePanes("Clockwise") },
     -- show the pane selection mode, but have it swap the active and selected panes
-    { mods = M.mod, key = "S",     action = wezterm.action.PaneSelect({}) },
+    -- { mods = M.mod, key = "S",     action = wezterm.action.PaneSelect({}) },
     -- Clipboard
     { mods = M.mod, key = "c",     action = act.CopyTo("Clipboard") },
-    { mods = M.mod, key = "Space", action = act.QuickSelect },
+    { mods = M.mod, key = "s",     action = act.QuickSelect },
     { mods = M.mod, key = "X",     action = act.ActivateCopyMode },
     { mods = M.mod, key = "f",     action = act.Search("CurrentSelectionOrEmptyString") },
     { mods = M.mod, key = "v",     action = act.PasteFrom("Clipboard") },
@@ -51,10 +61,11 @@ function M.setup(config)
       action = act.CharSelect({ copy_on_select = true, copy_to = "ClipboardAndPrimarySelection" }),
     },
     -- { mods = M.mod, key = "v", action = act.ShowDebugOverlay },
-    { mods = M.mod, key = "m", action = act.TogglePaneZoomState },
-    { mods = M.mod, key = "p", action = act.ActivateCommandPalette },
-    { mods = M.mod, key = "d", action = act.ShowDebugOverlay },
-    { mods = M.mod, key = "w", action = act.CloseCurrentPane { confirm = true } },
+    { mods = M.mod, key = "m",     action = act.TogglePaneZoomState },
+    { mods = M.mod, key = "p",     action = act.ActivateCommandPalette },
+    { mods = M.mod, key = "d",     action = act.ShowDebugOverlay },
+    { mods = M.mod, key = "w",     action = act.CloseCurrentPane { confirm = true } },
+    { mods = M.mod, key = "Space", action = workspace_switcher.switch_workspace() },
     M.split_nav("resize", "CTRL", "LeftArrow", "Left"),
     M.split_nav("resize", "CTRL", "RightArrow", "Right"),
     M.split_nav("resize", "CTRL", "UpArrow", "Up"),

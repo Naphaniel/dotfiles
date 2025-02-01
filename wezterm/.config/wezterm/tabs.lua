@@ -66,7 +66,7 @@ end
 function M.setup(config)
   config.use_fancy_tab_bar = false
   config.tab_bar_at_bottom = true
-  config.hide_tab_bar_if_only_one_tab = true
+  config.hide_tab_bar_if_only_one_tab = false
   config.tab_max_width = 32
   config.unzoom_on_switch_pane = true
 
@@ -106,7 +106,7 @@ function M.setup(config)
           { Attribute = { Intensity = "Bold" } },
           { Attribute = { Italic = true } },
         }
-      or {}
+        or {}
     ret[#ret + 1] = { Text = title }
     ret[#ret + 1] = { Foreground = { Color = arrow_fg } }
     ret[#ret + 1] = { Background = { Color = arrow_bg } }
