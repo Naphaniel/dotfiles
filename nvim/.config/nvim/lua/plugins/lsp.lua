@@ -2,6 +2,7 @@ return {
   {
     "neovim/nvim-lspconfig",
     dependencies = {
+      "saghen/blink.cmp",
       "williamboman/mason.nvim",
       "williamboman/mason-lspconfig.nvim",
       {
@@ -21,8 +22,11 @@ return {
         automatic_installation = true
       })
 
-      require("lspconfig").lua_ls.setup({})
-      require("lspconfig").pyright.setup({})
+      local capabilities = require("blink.cmp").get_lsp_capabilities()
+
+      require("lspconfig").lua_ls.setup({ capabilities = capabilities })
+      require("lspconfig").pyright.setup({ capabilities = capabilities })
+
 
       vim.api.nvim_create_autocmd("LspAttach", {
         callback = function(args)
