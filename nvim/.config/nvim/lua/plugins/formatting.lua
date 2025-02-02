@@ -1,7 +1,7 @@
 return {
   {
     "stevearc/conform.nvim",
-    dependencies = { "zapling/mason-conform.nvim", "williamboman/mason.nvim" },
+    dependencies = { "zapling/mason-conform.nvim" },
     config = function()
       require("conform").setup {
         -- Define your formatters

@@ -9,3 +9,12 @@ vim.keymap.set("n", "<C-k>", "<C-w><C-k>", { desc = "Move focus to the upper win
 vim.keymap.set("n", "<space>k", function()
   vim.diagnostic.open_float()
 end)
+
+vim.keymap.set("", "<leader>l", function()
+  local config = vim.diagnostic.config() or {}
+  if config.virtual_text then
+    vim.diagnostic.config { virtual_text = false, virtual_lines = true }
+  else
+    vim.diagnostic.config { virtual_text = true, virtual_lines = false }
+  end
+end, { desc = "Toggle lsp_lines" })

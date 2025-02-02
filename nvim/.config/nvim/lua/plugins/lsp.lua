@@ -2,8 +2,8 @@ return {
   {
     "neovim/nvim-lspconfig",
     dependencies = {
-      "williamboman/mason.nvim",
       "williamboman/mason-lspconfig.nvim",
+      { "https://git.sr.ht/~whynothugo/lsp_lines.nvim" },
       {
         "folke/lazydev.nvim",
         ft = "lua",
@@ -17,22 +17,25 @@ return {
     config = function()
       local capabilities = require("blink.cmp").get_lsp_capabilities()
 
-      require("mason").setup()
-
-      require("mason-lspconfig").setup({
+      require("mason-lspconfig").setup {
         automatic_installation = true,
-      })
+      }
 
       require("lspconfig").lua_ls.setup { capabilities = capabilities }
       require("lspconfig").pyright.setup { capabilities = capabilities }
 
-      vim.diagnostic.config {
-        virtual_text = true,
-      }
+      vim.api.nvim_create_autocmd("LspAttach", {
+        callback = function()
+          vim.keymap.set("n", "gd", require("telescope.builtin").lsp_definitions, { buffer = 0 })
+          vim.keymap.set("n", "gr", require("telescope.builtin").lsp_references, { buffer = 0 })
+          vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { buffer = 0 })
+          vim.keymap.set("n", "gt", vim.lsp.buf.type_definition, { buffer = 0 })
+          vim.keymap.set("n", "K", vim.lsp.buf.hover, { buffer = 0 })
+          vim.keymap.set("n", "gs", require("telescope.builtin").lsp_document_symbols, { buffer = 0 })
+        end,
+      })
 
-      vim.keymap.set("n", "<space>k", function()
-        vim.diagnostic.open_float()
-      end)
+      require("lsp_lines").setup()
     end,
   },
 }

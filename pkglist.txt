@@ -80,6 +80,7 @@ linux-headers
 logrotate
 lsb-release
 lsscsi
+luarocks
 lvm2
 man-db
 man-pages
@@ -148,6 +149,7 @@ systemd-sysvcompat
 texinfo
 tldr
 tofi
+tree
 tree-sitter-cli
 ttf-bitstream-vera
 ttf-dejavu

@@ -1,7 +1,7 @@
 return {
   {
     "mfussenegger/nvim-lint",
-    dependencies = { "rshkarin/mason-nvim-lint", "williamboman/mason.nvim" },
+    dependencies = { "rshkarin/mason-nvim-lint" },
     config = function()
       require("lint").linters_by_ft = {
         lua = { "luacheck" },
