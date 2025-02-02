@@ -25,3 +25,7 @@ vim.opt.cursorline = true
 vim.opt.scrolloff = 10
 vim.opt.errorbells = false
 vim.opt.termguicolors = true
+
+vim.diagnostic.config {
+  virtual_text = true,
+}

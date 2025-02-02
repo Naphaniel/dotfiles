@@ -1,21 +1,21 @@
 return {
   {
-    'saghen/blink.cmp',
-    dependencies = { 'rafamadriz/friendly-snippets', "xzbdmw/colorful-menu.nvim" },
-    version = '*',
+    "saghen/blink.cmp",
+    dependencies = { "rafamadriz/friendly-snippets", "xzbdmw/colorful-menu.nvim" },
+    version = "*",
 
     ---@module 'blink.cmp'
     ---@type blink.cmp.Config
     opts = {
-      keymap = { preset = 'default' },
+      keymap = { preset = "default" },
       appearance = {
         use_nvim_cmp_as_default = true,
-        nerd_font_variant = 'mono'
+        nerd_font_variant = "mono",
       },
-      signature = { enabled = true, window = { show_documentation = true } },
+      signature = { enabled = true, window = { show_documentation = false } },
       completion = {
         ghost_text = {
-          enabled = true
+          enabled = true,
         },
         documentation = { auto_show = true },
         menu = {
@@ -36,5 +36,5 @@ return {
         },
       },
     },
-  }
+  },
 }

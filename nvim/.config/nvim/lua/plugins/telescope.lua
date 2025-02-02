@@ -1,13 +1,13 @@
 live_multigrep = function(opts)
-  local pickers = require("telescope.pickers")
-  local finders = require("telescope.finders")
-  local make_entry = require("telescope.make_entry")
+  local pickers = require "telescope.pickers"
+  local finders = require "telescope.finders"
+  local make_entry = require "telescope.make_entry"
   local conf = require("telescope.config").values
 
   opts = opts or {}
   opts.cwd = opts.cwd or vim.uv.cwd()
 
-  local finder = finders.new_async_job({
+  local finder = finders.new_async_job {
     command_generator = function(prompt)
       if not prompt or prompt == "" then
         return nil
@@ -26,22 +26,24 @@ live_multigrep = function(opts)
       end
 
       ---@diagnostic disable-next-line: deprecated
-      return vim.tbl_flatten({
+      return vim.tbl_flatten {
         args,
-        { "--color=never", "--no-heading", "--with-filename", "--line-number", "--column", "--smart-case" }
-      })
+        { "--color=never", "--no-heading", "--with-filename", "--line-number", "--column", "--smart-case" },
+      }
     end,
     cwd = opts.cwd,
     entry_maker = make_entry.gen_from_vimgrep(opts),
-  })
+  }
 
-  pickers.new(opts, {
-    debounce = 100,
-    prompt_title = "Multi Grep",
-    finder = finder,
-    previewer = conf.grep_previewer(opts),
-    sorter = require("telescope.sorters").empty(),
-  }):find()
+  pickers
+    .new(opts, {
+      debounce = 100,
+      prompt_title = "Multi Grep",
+      finder = finder,
+      previewer = conf.grep_previewer(opts),
+      sorter = require("telescope.sorters").empty(),
+    })
+    :find()
 end
 
 return {
@@ -51,17 +53,17 @@ return {
     dependencies = {
       "nvim-lua/plenary.nvim",
       { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
-      "nvim-tree/nvim-web-devicons"
+      "nvim-tree/nvim-web-devicons",
     },
     config = function()
-      require("telescope").setup({
+      require("telescope").setup {
         extensions = {
           wrap_results = true,
-          fzf = {}
-        }
-      })
+          fzf = {},
+        },
+      }
 
-      require('telescope').load_extension('fzf')
+      require("telescope").load_extension "fzf"
 
       vim.keymap.set("n", "<space>ff", require("telescope.builtin").find_files)
       vim.keymap.set("n", "<space>fh", require("telescope.builtin").help_tags)
@@ -69,18 +71,18 @@ return {
       vim.keymap.set("n", "<space>/", require("telescope.builtin").current_buffer_fuzzy_find)
       vim.keymap.set("n", "<space>gw", require("telescope.builtin").grep_string)
       vim.keymap.set("n", "<space>en", function()
-        require("telescope.builtin").find_files({
-          cwd = vim.fn.stdpath("config")
-        })
+        require("telescope.builtin").find_files {
+          cwd = vim.fn.stdpath "config",
+        }
       end)
 
       vim.keymap.set("n", "<space>fg", live_multigrep)
 
       vim.keymap.set("n", "<space>ep", function()
-        require("telescope.builtin").find_files({
-          cwd = vim.fs.joinpath(vim.fn.stdpath("data"), "lazy")
-        })
+        require("telescope.builtin").find_files {
+          cwd = vim.fs.joinpath(vim.fn.stdpath "data", "lazy"),
+        }
       end)
-    end
-  }
+    end,
+  },
 }

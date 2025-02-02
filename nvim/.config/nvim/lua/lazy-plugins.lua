@@ -1,5 +1,5 @@
-require("lazy").setup({
+require("lazy").setup {
   spec = {
-    { import = "plugins" }
+    { import = "plugins" },
   },
-})
+}
