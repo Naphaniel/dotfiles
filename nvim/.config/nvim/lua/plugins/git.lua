@@ -3,6 +3,7 @@ return {
     "lewis6991/gitsigns.nvim",
     config = function()
       require("gitsigns").setup()
+      vim.keymap.set("n", "<space>gb", require("gitsigns").blame)
     end,
   },
   {
@@ -12,6 +13,10 @@ return {
       "sindrets/diffview.nvim",
       "nvim-telescope/telescope.nvim",
     },
-    config = true,
+    config = function()
+      require("neogit").setup {}
+
+      vim.keymap.set("n", "<space>gg", require("neogit").open)
+    end,
   },
 }
