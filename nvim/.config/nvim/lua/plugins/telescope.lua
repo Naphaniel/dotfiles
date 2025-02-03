@@ -57,6 +57,27 @@ return {
     },
     config = function()
       require("telescope").setup {
+        pickers = {
+          hidden = true,
+          find_files = {
+            hidden = true,
+          },
+          find_buffers = {
+            hidden = true,
+          },
+          buffers = {
+            hidden = true,
+          },
+          grep_string = {
+            hidden = true,
+          },
+          lsp_definitions = {
+            hidden = true,
+          },
+          lsp_references = {
+            hidden = true,
+          },
+        },
         extensions = {
           wrap_results = true,
           fzf = {},
