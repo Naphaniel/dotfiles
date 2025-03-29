@@ -23,7 +23,6 @@ return {
 
       require("lspconfig").lua_ls.setup { capabilities = capabilities }
       require("lspconfig").pyright.setup { capabilities = capabilities }
-      require("lspconfig").clangd.setup { capabilities = capabilities }
 
       vim.api.nvim_create_autocmd("LspAttach", {
         callback = function()
@@ -32,6 +31,7 @@ return {
           vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { buffer = 0 })
           vim.keymap.set("n", "gt", vim.lsp.buf.type_definition, { buffer = 0 })
           vim.keymap.set("n", "K", vim.lsp.buf.hover, { buffer = 0 })
+          vim.keymap.set("n", "gca", vim.lsp.buf.code_action, { buffer = 0 })
           vim.keymap.set("n", "gs", require("telescope.builtin").lsp_document_symbols, { buffer = 0 })
         end,
       })

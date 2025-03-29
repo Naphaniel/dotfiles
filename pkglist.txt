@@ -111,6 +111,7 @@ ntp
 nvidia
 nvidia-hook
 nvidia-inst
+obsidian
 openssh
 otf-font-awesome
 pacman-contrib

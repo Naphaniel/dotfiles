@@ -15,11 +15,11 @@ return {
       signature = { enabled = true, window = { show_documentation = false } },
       completion = {
         ghost_text = {
-          enabled = true,
+          enabled = false,
         },
         documentation = { auto_show = true },
         menu = {
-          auto_show = false,
+          auto_show = true,
           draw = {
             columns = { { "kind_icon" }, { "label", gap = 1 } },
             components = {
