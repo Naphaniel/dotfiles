@@ -6,6 +6,8 @@ return {
       require("lint").linters_by_ft = {
         lua = { "luacheck" },
         python = { "pylint" },
+        typescript = { "eslint_d" },
+        javascript = { "eslint_d" },
       }
       require("mason-nvim-lint").setup()
       vim.api.nvim_create_autocmd({ "BufWritePost" }, {

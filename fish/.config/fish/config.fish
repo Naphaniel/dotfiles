@@ -29,8 +29,12 @@ function y
 	rm -f -- "$tmp"
 end
 
-if test (tty) = "/dev/tty1"
-	exec hyprland
+if status is-login
+    contains ~/.local/bin $PATH
+    or set PATH ~/.local/bin $PATH
 end
 
 zoxide init fish | source
+pyenv init - fish | source
+
+set -gx REQUESTS_CA_BUNDLE ~/combined_certs.pem

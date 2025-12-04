@@ -8,7 +8,7 @@ end)
 -- load plugin
 local workspace_switcher = wezterm.plugin.require("https://github.com/MLFlexer/smart_workspace_switcher.wezterm")
 -- set path to zoxide
-workspace_switcher.zoxide_path = "/usr/bin/zoxide"
+workspace_switcher.zoxide_path = "/opt/homebrew/bin/zoxide"
 
 local act = wezterm.action
 local M = {}
@@ -90,7 +90,9 @@ function M.split_nav(resize_or_move, mods, key, dir)
 		else
 			if resize_or_move == "resize" then
 				win:perform_action({ AdjustPaneSize = { dir, 3 } }, pane)
+				print("resize")
 			else
+				print("move")
 				local panes = pane:tab():panes_with_info()
 				local is_zoomed = false
 				for _, p in ipairs(panes) do

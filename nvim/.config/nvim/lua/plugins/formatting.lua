@@ -6,8 +6,10 @@ return {
       require("conform").setup {
         -- Define your formatters
         formatters_by_ft = {
-          lua = { "stylua" },
-          python = { "black" },
+          lua = { "stylua", lsp_format = "fallback" },
+          python = { "black", lsp_format = "fallback" },
+          typescript = { "prettier", lsp_format = "fallback" },
+          javascript = { "prettier", lsp_format = "fallback" },
         },
         default_format_opts = {
           lsp_format = "fallback",
