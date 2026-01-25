@@ -35,6 +35,8 @@ if status is-login
 end
 
 zoxide init fish | source
-pyenv init - fish | source
+echo 'uv generate-shell-completion fish | source' > ~/.config/fish/completions/uv.fish
 
-set -gx REQUESTS_CA_BUNDLE ~/combined_certs.pem
+alias python='python3'
+alias pip='pip3'
+fish_add_path -m /opt/homebrew/bin/

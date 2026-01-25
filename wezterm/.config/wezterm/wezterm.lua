@@ -28,6 +28,10 @@ config.underline_position = -6
 config.term = "wezterm"
 config.window_decorations = "RESIZE"
 
+config.default_prog = { '/opt/homebrew/bin/fish', '-l' }
+
+
+
 -- Cursor
 config.default_cursor_style = "BlinkingBar"
 config.force_reverse_video_cursor = true
