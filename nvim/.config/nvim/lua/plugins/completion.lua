@@ -1,7 +1,15 @@
 return {
   {
     "saghen/blink.cmp",
-    dependencies = { "rafamadriz/friendly-snippets", "xzbdmw/colorful-menu.nvim" },
+    dependencies = {
+      "rafamadriz/friendly-snippets",
+      "xzbdmw/colorful-menu.nvim",
+      {
+        "jmbuhr/cmp-pandoc-references",
+        dev = false,
+        ft = { "quarto", "markdown", "rmarkdown" },
+      },
+    },
     version = "*",
 
     ---@module 'blink.cmp'

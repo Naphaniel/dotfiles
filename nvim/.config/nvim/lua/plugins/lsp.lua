@@ -1,5 +1,17 @@
 return {
   {
+    "jmbuhr/otter.nvim",
+    dev = false,
+    dependencies = {
+      {
+        "neovim/nvim-lspconfig",
+        "nvim-treesitter/nvim-treesitter",
+      },
+    },
+    ---@type OtterConfig
+    opts = {},
+  },
+  {
     "neovim/nvim-lspconfig",
     dependencies = {
       "williamboman/mason-lspconfig.nvim",
@@ -17,13 +29,15 @@ return {
     config = function()
       local capabilities = require("blink.cmp").get_lsp_capabilities()
 
+      vim.lsp.config("*", { capabilities = capabilities })
+
+      vim.lsp.enable "lua_ls"
+      vim.lsp.enable "pyright"
+      vim.lsp.enable "ts_ls"
+
       require("mason-lspconfig").setup {
         automatic_installation = true,
       }
-
-      require("lspconfig").lua_ls.setup { capabilities = capabilities }
-      require("lspconfig").pyright.setup { capabilities = capabilities }
-      require("lspconfig").ts_ls.setup { capabilities = capabilities }
 
       vim.api.nvim_create_autocmd("LspAttach", {
         callback = function()
