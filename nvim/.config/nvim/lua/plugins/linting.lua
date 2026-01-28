@@ -5,7 +5,7 @@ return {
     config = function()
       require("lint").linters_by_ft = {
         lua = { "luacheck" },
-        python = { "pylint" },
+        python = { "ruff" },
         yaml = { "yamllint" },
       }
       require("mason-nvim-lint").setup()

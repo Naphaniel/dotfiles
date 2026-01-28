@@ -32,7 +32,7 @@ return {
       vim.lsp.config("*", { capabilities = capabilities })
 
       require("mason-lspconfig").setup {
-        ensure_installed = { "lua_ls", "pyright", "fish_lsp", "yamlls" },
+        ensure_installed = { "lua_ls", "basedpyright", "fish_lsp", "yamlls" },
       }
 
       vim.api.nvim_create_autocmd("LspAttach", {

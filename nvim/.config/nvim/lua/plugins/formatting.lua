@@ -7,7 +7,7 @@ return {
         -- Define your formatters
         formatters_by_ft = {
           lua = { "stylua", lsp_format = "fallback" },
-          python = { "black", lsp_format = "fallback" },
+          python = { "ruff_format", lsp_format = "fallback" },
           fish = { "fish_indent", lsp_format = "fallback" },
         },
         default_format_opts = {
