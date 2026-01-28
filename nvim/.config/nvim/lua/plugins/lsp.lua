@@ -31,12 +31,8 @@ return {
 
       vim.lsp.config("*", { capabilities = capabilities })
 
-      vim.lsp.enable "lua_ls"
-      vim.lsp.enable "pyright"
-      vim.lsp.enable "ts_ls"
-
       require("mason-lspconfig").setup {
-        automatic_installation = true,
+        ensure_installed = { "lua_ls", "pyright", "fish_lsp", "yamlls" },
       }
 
       vim.api.nvim_create_autocmd("LspAttach", {

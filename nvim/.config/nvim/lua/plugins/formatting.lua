@@ -8,8 +8,7 @@ return {
         formatters_by_ft = {
           lua = { "stylua", lsp_format = "fallback" },
           python = { "black", lsp_format = "fallback" },
-          typescript = { "prettier", lsp_format = "fallback" },
-          javascript = { "prettier", lsp_format = "fallback" },
+          fish = { "fish_indent", lsp_format = "fallback" },
         },
         default_format_opts = {
           lsp_format = "fallback",

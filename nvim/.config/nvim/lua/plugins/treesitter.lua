@@ -13,8 +13,8 @@ return {
           "markdown_inline",
           "latex",
           "python",
-          "typescript",
-          "javascript",
+          "yaml",
+          "fish",
         },
         auto_install = false,
         highlight = {
