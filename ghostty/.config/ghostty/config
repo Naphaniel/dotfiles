@@ -1,0 +1,4 @@
+theme = Rose Pine
+font-family = 'BerkeleyMono Nerd Font'
+command = /opt/homebrew/bin/fish --login --interactive
+macos-option-as-alt = true

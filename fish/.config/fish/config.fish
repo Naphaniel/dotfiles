@@ -4,8 +4,6 @@ set fish_greeting
 
 starship init fish | source
 
-enable_transience
-
 set -gx fish_vi_force_cursor 1
 set -gx fish_cursor_default block
 set -gx fish_cursor_insert line blink
@@ -21,12 +19,12 @@ set -g man_standout -b c4a7e7
 set -g man_underline -u f6c177
 
 function y
-	set tmp (mktemp -t "yazi-cwd.XXXXXX")
-	yazi $argv --cwd-file="$tmp"
-	if set cwd (command cat -- "$tmp"); and [ -n "$cwd" ]; and [ "$cwd" != "$PWD" ]
-		builtin cd -- "$cwd"
-	end
-	rm -f -- "$tmp"
+    set tmp (mktemp -t "yazi-cwd.XXXXXX")
+    yazi $argv --cwd-file="$tmp"
+    if set cwd (command cat -- "$tmp"); and [ -n "$cwd" ]; and [ "$cwd" != "$PWD" ]
+        builtin cd -- "$cwd"
+    end
+    rm -f -- "$tmp"
 end
 
 if status is-login
@@ -35,8 +33,17 @@ if status is-login
 end
 
 zoxide init fish | source
-echo 'uv generate-shell-completion fish | source' > ~/.config/fish/completions/uv.fish
+echo 'uv generate-shell-completion fish | source' >~/.config/fish/completions/uv.fish
 
 alias python='python3'
 alias pip='pip3'
 fish_add_path -m /opt/homebrew/bin/
+
+bind ctrl-space zellij-sessionizer
+
+set -Ux FZF_DEFAULT_OPTS "
+	--color=fg:#908caa,bg:#191724,hl:#ebbcba
+	--color=fg+:#e0def4,bg+:#26233a,hl+:#ebbcba
+	--color=border:#403d52,header:#31748f,gutter:#191724
+	--color=spinner:#f6c177,info:#9ccfd8
+	--color=pointer:#c4a7e7,marker:#eb6f92,prompt:#908caa"
