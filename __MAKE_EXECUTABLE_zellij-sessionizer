@@ -1,0 +1,198 @@
+#!/usr/bin/env fish
+
+# Directories to search for projects (searches one level deep)
+set SEARCH_PATHS "$HOME/dev"
+
+# Specific directories to include
+set SPECIFIC_PATHS "$HOME/.dotfiles" "$HOME/dotfiles"
+
+if set -q ZELLIJ_SESSIONIZER_OS_TYPE
+    set OS_TYPE "$ZELLIJ_SESSIONIZER_OS_TYPE"
+else
+    set OS_TYPE (uname)
+end
+
+if set -q ZELLIJ_SESSIONIZER_SWITCH_PLUGIN
+    set ZELLIJ_SWITCH_PLUGIN "$ZELLIJ_SESSIONIZER_SWITCH_PLUGIN"
+else
+    set ZELLIJ_SWITCH_PLUGIN "https://github.com/mostafaqanbaryan/zellij-switch/releases/download/0.2.1/zellij-switch.wasm"
+end
+
+function get_atime
+    set -l dir $argv[1]
+    if test "$OS_TYPE" = Linux
+        stat -c "%X" "$dir" 2>/dev/null; or echo 0
+    else
+        stat -f "%a" "$dir" 2>/dev/null; or echo 0
+    end
+end
+
+function extract_session_name
+    set -l display_line $argv[1]
+    # Remove ANSI-colored status (e.g. " \e[32m(current)\e[0m")
+    set -l clean_path (echo "$display_line" | sed 's/ \x1b\[[0-9;]*m([^)]*)\x1b\[[0-9;]*m$//' | sed 's/ ([^)]*)$//')
+    set -l full_path
+    if string match -q '~*' "$clean_path"
+        set full_path "$HOME"(string sub -s 2 "$clean_path")
+    else
+        set full_path "$clean_path"
+    end
+    basename "$full_path"
+end
+
+function generate_display_list
+    # Collect all directories
+    set -l all_dirs
+
+    # Add first-level directories from SEARCH_PATHS
+    for search_path in $SEARCH_PATHS
+        if test -d "$search_path"
+            for dir in "$search_path"/*/
+                if test -d "$dir"
+                    set -a all_dirs "$dir"
+                end
+            end
+        end
+    end
+
+    # Add SPECIFIC_PATHS
+    for specific_path in $SPECIFIC_PATHS
+        if test -d "$specific_path"
+            set -a all_dirs "$specific_path"
+        end
+    end
+
+    # Sort directories by last access time (most recent first)
+    set -l temp_file (mktemp)
+    for dir in $all_dirs
+        set -l atime (get_atime "$dir")
+        echo "$atime $dir" >>"$temp_file"
+    end
+
+    # Sort by access time (descending) and extract directory names
+    set -l sorted_dirs
+    for line in (sort -nr "$temp_file")
+        # Everything after the first space
+        set -l dir_name (string replace -r '^\S+\s+' '' "$line")
+        set -a sorted_dirs "$dir_name"
+    end
+
+    rm "$temp_file"
+
+    # Get zellij session information
+    # Fish has no associative arrays, so use two parallel lists
+    set -l session_names
+    set -l session_statuses
+
+    if command -q zellij
+        for line in (zellij ls -n 2>/dev/null)
+            if test -n "$line"
+                set -l session_name (echo "$line" | awk '{print $1}' | sed 's/\x1b\[[0-9;]*m//g' | string trim)
+                test -z "$session_name"; and continue
+
+                set -l status_str
+                if string match -q '*\(current\)*' "$line"
+                    set status_str " "(set_color green)"(current)"(set_color normal)
+                else if string match -q '*\(EXITED*' "$line"
+                    set status_str " "(set_color red)"(exited)"(set_color normal)
+                else
+                    set status_str " "(set_color yellow)"(active)"(set_color normal)
+                end
+
+                set -a session_names "$session_name"
+                set -a session_statuses "$status_str"
+            end
+        end
+    end
+
+    # Create display names replacing $HOME with ~ and appending session status
+    for dir in $sorted_dirs
+        set -l display_name (string replace "$HOME" "~" "$dir")
+        set -l session_name (basename "$dir")
+
+        # Look up status in parallel lists
+        set -l status_str ""
+        for i in (seq (count $session_names))
+            if test "$session_names[$i]" = "$session_name"
+                set status_str "$session_statuses[$i]"
+                break
+            end
+        end
+
+        echo "$display_name$status_str"
+    end
+end
+
+# Handle --generate-list flag (called by fzf --reload)
+if test "$argv[1]" = --generate-list
+    generate_display_list
+    exit 0
+end
+
+# Create a temporary bash script for session operations (invoked by fzf bindings)
+set temp_script (mktemp)
+printf '%s\n' \
+    '#!/usr/bin/env bash' \
+    '' \
+    'extract_session_name() {' \
+    '  local display_line="$1"' \
+    '  local clean_path=$(echo "$display_line" | sed '"'"'s/ \x1b\[[0-9;]*m([^)]*)\x1b\[[0-9;]*m$//'"'"' | sed '"'"'s/ ([^)]*)$//'"'"')' \
+    '  local full_path' \
+    '  if [[ "$clean_path" == ~* ]]; then' \
+    '    full_path="$HOME${clean_path:1}"' \
+    '  else' \
+    '    full_path="$clean_path"' \
+    '  fi' \
+    '  basename "$full_path"' \
+    '}' \
+    '' \
+    'if [[ "$1" == "delete" ]]; then' \
+    '  session_name=$(extract_session_name "$2")' \
+    '  if [[ -n "$session_name" ]]; then' \
+    '    zellij delete-session "$session_name" --force 2>/dev/null' \
+    '  fi' \
+    fi \
+    '' \
+    'if [[ "$1" == "kill" ]]; then' \
+    '  session_name=$(extract_session_name "$2")' \
+    '  if [[ -n "$session_name" ]]; then' \
+    '    zellij kill-session "$session_name" 2>/dev/null' \
+    '  fi' \
+    fi >"$temp_script"
+
+chmod +x "$temp_script"
+
+# Use fzf with key bindings for session management
+set selected_display (generate_display_list | fzf --ansi \
+    --prompt="Select project: " \
+    --header="Enter: Select | Ctrl+D: Delete Session | Ctrl+K: Kill Session" \
+    --bind="ctrl-d:execute($temp_script delete {})+reload((status filename) --generate-list)" \
+    --bind="ctrl-k:execute($temp_script kill {})+reload((status filename) --generate-list)")
+
+rm -f "$temp_script"
+
+# Exit if nothing selected
+if test -z "$selected_display"
+    exit 0
+end
+
+# Strip status/color codes from selected line to recover the path
+set clean_display (echo "$selected_display" | sed 's/ \x1b\[[0-9;]*m([^)]*)\x1b\[[0-9;]*m$//' | sed 's/ ([^)]*)$//')
+
+set selected_dir
+if string match -q '~*' "$clean_display"
+    set selected_dir "$HOME"(string sub -s 2 "$clean_display")
+else
+    set selected_dir "$clean_display"
+end
+
+set session_name (basename "$selected_dir")
+
+# Attach or switch session
+if not set -q ZELLIJ
+    # Not inside zellij — attach (creating if needed)
+    zellij attach "$session_name" --create
+else
+    # Already inside zellij — use switch plugin
+    zellij pipe --plugin "$ZELLIJ_SWITCH_PLUGIN" -- "--session $session_name --cwd $selected_dir"
+end
