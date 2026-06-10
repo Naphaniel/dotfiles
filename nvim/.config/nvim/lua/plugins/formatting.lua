@@ -6,6 +6,7 @@ return {
       require("conform").setup {
         -- Define your formatters
         formatters_by_ft = {
+          haskell = { "ormolu", lsp_format = "fallback" },
           lua = { "stylua", lsp_format = "fallback" },
           python = { "ruff_format", lsp_format = "fallback" },
           fish = { "fish_indent", lsp_format = "fallback" },

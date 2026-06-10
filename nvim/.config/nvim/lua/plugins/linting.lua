@@ -7,6 +7,7 @@ return {
         lua = { "luacheck" },
         python = { "ruff" },
         yaml = { "yamllint" },
+        go = { "golangcilint" },
       }
       require("mason-nvim-lint").setup()
       vim.api.nvim_create_autocmd({ "BufWritePost" }, {

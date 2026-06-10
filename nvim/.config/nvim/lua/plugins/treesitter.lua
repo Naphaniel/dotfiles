@@ -6,6 +6,8 @@ return {
     config = function()
       require("nvim-treesitter.config").setup {
         ensure_installed = {
+          "go",
+          "haskell",
           "lua",
           "vim",
           "vimdoc",

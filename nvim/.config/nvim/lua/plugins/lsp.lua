@@ -8,6 +8,7 @@ return {
         "nvim-treesitter/nvim-treesitter",
       },
     },
+
     ---@type OtterConfig
     opts = {},
   },
@@ -32,7 +33,8 @@ return {
       vim.lsp.config("*", { capabilities = capabilities })
 
       require("mason-lspconfig").setup {
-        ensure_installed = { "lua_ls", "basedpyright", "fish_lsp", "yamlls" },
+        ensure_installed = { "lua_ls", "basedpyright", "fish_lsp", "yamlls", "hls", "gopls" },
+        automatic_enable = true,
       }
 
       vim.api.nvim_create_autocmd("LspAttach", {
