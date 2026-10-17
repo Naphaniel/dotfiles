@@ -30,10 +30,18 @@ return {
     config = function()
       local capabilities = require("blink.cmp").get_lsp_capabilities()
 
-      vim.lsp.config("*", { capabilities = capabilities })
+      vim.lsp.config("*", {
+        capabilities = capabilities,
+      })
 
       require("mason-lspconfig").setup {
-        ensure_installed = { "lua_ls", "basedpyright", "fish_lsp", "yamlls", "hls", "gopls" },
+        ensure_installed = {
+          "lua_ls",
+          "basedpyright",
+          "fish_lsp",
+          "yamlls",
+          "gopls",
+        },
         automatic_enable = true,
       }
 

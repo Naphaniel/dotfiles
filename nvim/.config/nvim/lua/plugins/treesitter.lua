@@ -7,7 +7,6 @@ return {
       require("nvim-treesitter.config").setup {
         ensure_installed = {
           "go",
-          "haskell",
           "lua",
           "vim",
           "vimdoc",
@@ -18,8 +17,9 @@ return {
           "python",
           "yaml",
           "fish",
+          "rust",
         },
-        auto_install = false,
+        auto_install = true,
         highlight = {
           enable = true,
           disable = function(lang, buf)

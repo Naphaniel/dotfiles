@@ -131,7 +131,7 @@ keybinds clear-defaults=true {
     }
     normal {
         bind "esc" { SwitchToMode "locked"; }
-        bind "Ctrl space" { Run "zellij-sessionizer" {
+        bind "Ctrl o" { Run "zellij-sessionizer" {zellij
             close_on_exit true
             floating true
             x "30%"
